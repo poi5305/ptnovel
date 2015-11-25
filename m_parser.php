@@ -9,6 +9,29 @@ class PtParser {
 
     }
 
+    public static function parseBookFromThread(&$html) {
+        $postlist = $html->find("div[id='postlist']", 0);
+        $class = $postlist->find("h2",0)->plaintext;
+        $name = $postlist->find("h1",0)->plaintext;
+
+        $url = trim($html->find("link", 0)->href);
+        list($id, $current_pages) = sscanf($url, "http://ck101.com/thread-%d-%d-1.html");
+
+        $looks = $posts = $likes = 0;
+        $bookInfo = trim($html->find("div.authMsg", 0)->plaintext);
+        preg_match("/.+查看\ (\d*).+回覆\ (\d*).+感謝\ (\d*)/", str_replace("\n", "", $bookInfo), $numbers);
+        if (count($numbers) >= 4) {
+            list($match, $looks, $posts, $likes) = $numbers;
+        }
+
+        $pages = floor($posts/10) + 1;
+        $info = strstr($name, "已完") ? 1 : 0;
+        $source = "ck101";
+
+        return new Book($id, $name, $class, $posts, $pages,
+                $current_pages, $looks, $likes, $info, $source);
+    }
+
     public static function parseBooksFromForum(&$html) {
         $books = array();
         $threads = $html->find("*[id^=normalthread]");
@@ -32,7 +55,7 @@ class PtParser {
             $looks = PtParser::stringToInt($looks);
             $pages = floor($posts/10) + 1;
             $current_pages = 0;
-            $info = strstr($data[$idx]["name"],"已完") ? 1 : 0;
+            $info = strstr($name, "已完") ? 1 : 0;
             $source = "ck101";
 
             $books[] = new Book($id, $name, $class, $posts, $pages,
@@ -63,11 +86,18 @@ class PtParserTest {
     public function PtParserTest() {
         $this->parser = new PtParser();
         $this->testParserBooksFromForum();
+        $this->testParseBookFromThread();
     }
 
     public function testParserBooksFromForum() {
         $html = file_get_html("test/forum.html");
         $r = PtParser::parseBooksFromForum($html);
+        //print_r($r);
+    }
+
+    public function testParseBookFromThread() {
+        $html = file_get_html("test/thread.html");
+        $r = PtParser::parseBookFromThread($html);
         print_r($r);
     }
 
