@@ -78,7 +78,8 @@ class Sqlite3Db implements PtNovelDatabase {
             name TEXT,
             class TEXT,
             posts INTEGER,
-            current_posts INTEGER,
+            pages INTEGER,
+            current_pages INTEGER,
             looks INTEGER,
             likes INTEGER,
             info TEXT,
@@ -188,7 +189,8 @@ class Sqlite3DbTest {
             "name" => "不幹正事的魔王",
             "class" => "魔王",
             "posts" => "335",
-            "current_posts" => "335",
+            "pages" => "40"
+            "current_pages" => "40",
             "looks" => "115887",
             "likes" => "15",
             "info" => "some info",
@@ -200,7 +202,7 @@ class Sqlite3DbTest {
     function testEditBook() {
         $book = array("id" => "3347713",
             "posts" => "340",
-            "current_posts" => "335",
+            "current_pages" => "335",
             "looks" => "155887",
             "likes" => "20");
         $this->handle->editBook($book);
