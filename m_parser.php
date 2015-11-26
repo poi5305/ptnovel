@@ -3,11 +3,34 @@
 include_once("simple_html_dom.php");
 include_once("s_book.php");
 
-class PtParser {
+interface PtParser {
 
-    public function PtParser() {
+    public static function parseContentFromThread(&$html);
 
+    public static function parseBookFromThread(&$html);
+
+    public static function parseBooksFromForum(&$html);
+
+}
+
+class PtParserUtil {
+
+    public static function page_url_to_info($page_url)
+    {
+        $url = explode("-",$page_url);
+        return Array("novel_id"=>$url[1], "novel_page"=>$url[2]);
     }
+
+    public static function stringToInt($s) {
+        $s = str_replace("k", "00", $s);
+        $s = str_replace("m", "00000", $s);
+        $s = str_replace(".", "", $s);
+        return +$s;
+    }
+
+}
+
+class PtParserCk101 implements PtParser{
 
     public static function parseContentFromThread(&$html) {
         $text = "";
@@ -60,9 +83,9 @@ class PtParser {
                 return $v != "" && $v != "\n";
             }));
 
-            $likes = PtParser::stringToInt($likes);
-            $posts = PtParser::stringToInt($posts);
-            $looks = PtParser::stringToInt($looks);
+            $likes = PtParserUtil::stringToInt($likes);
+            $posts = PtParserUtil::stringToInt($posts);
+            $looks = PtParserUtil::stringToInt($looks);
             $pages = floor($posts/10) + 1;
             $current_pages = 0;
             $info = strstr($name, "已完") ? 1 : 0;
@@ -74,45 +97,31 @@ class PtParser {
         return $books;
     }
 
-    public static function page_url_to_info($page_url)
-    {
-        $url = explode("-",$page_url);
-        return Array("novel_id"=>$url[1], "novel_page"=>$url[2]);
-    }
-
-    public static function stringToInt($s) {
-        $s = str_replace("k", "00", $s);
-        $s = str_replace("m", "00000", $s);
-        $s = str_replace(".", "", $s);
-        return +$s;
-    }
-
 }
 
-class PtParserTest {
+class PtParserCk101Test {
 
     var $parser;
 
-    public function PtParserTest() {
-        $this->parser = new PtParser();
+    public function PtParserCk101Test() {
         $this->testParserBooksFromForum();
         $this->testParseBookFromThread();
     }
 
     public function testParserBooksFromForum() {
         $html = file_get_html("test/forum.html");
-        $r = PtParser::parseBooksFromForum($html);
+        $r = PtParserCk101::parseBooksFromForum($html);
         //print_r($r);
     }
 
     public function testParseBookFromThread() {
         $html = file_get_html("test/thread.html");
-        $r = PtParser::parseBookFromThread($html);
+        $r = PtParserCk101::parseBookFromThread($html);
         print_r($r);
     }
 
 }
 
-$test = new PtParserTest();
+$test = new PtParserCk101Test();
 
 ?>
