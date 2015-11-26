@@ -61,6 +61,6 @@ class PtHttpCk101Test {
 
 }
 
-$test = new PtHttpCk101Test();
+//$test = new PtHttpCk101Test();
 
 ?>

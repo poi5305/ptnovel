@@ -189,7 +189,7 @@ class Sqlite3DbTest {
             "name" => "不幹正事的魔王",
             "class" => "魔王",
             "posts" => "335",
-            "pages" => "40"
+            "pages" => "40",
             "current_pages" => "40",
             "looks" => "115887",
             "likes" => "15",
@@ -216,6 +216,6 @@ class Sqlite3DbTest {
 
 }
 
-$test = new Sqlite3DbTest();
+//$test = new Sqlite3DbTest();
 
 ?>

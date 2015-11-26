@@ -137,6 +137,6 @@ class PtParserCk101Test {
 
 }
 
-$test = new PtParserCk101Test();
+//$test = new PtParserCk101Test();
 
 ?>
