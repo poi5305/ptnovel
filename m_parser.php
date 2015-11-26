@@ -11,6 +11,8 @@ interface PtParser {
 
     public static function parseBooksFromForum(&$html);
 
+    public static function parseForumPages(&$html);
+
 }
 
 class PtParserUtil {
@@ -97,6 +99,12 @@ class PtParserCk101 implements PtParser{
         return $books;
     }
 
+    public static function parseForumPages(&$html) {
+        $pages = $html->find("a.last", 0)->plaintext;
+        $pages = trim(str_replace(".", "", $pages));
+        return $pages;
+    }
+
 }
 
 class PtParserCk101Test {
@@ -106,6 +114,7 @@ class PtParserCk101Test {
     public function PtParserCk101Test() {
         $this->testParserBooksFromForum();
         $this->testParseBookFromThread();
+        $this->testParseForumPages();
     }
 
     public function testParserBooksFromForum() {
@@ -117,7 +126,13 @@ class PtParserCk101Test {
     public function testParseBookFromThread() {
         $html = file_get_html("test/thread.html");
         $r = PtParserCk101::parseBookFromThread($html);
-        print_r($r);
+        //print_r($r);
+    }
+
+    public function testParseForumPages() {
+        $html = file_get_html("test/forum.html");
+        $pages = PtParserCk101::parseForumPages($html);
+        //echo $pages;
     }
 
 }
