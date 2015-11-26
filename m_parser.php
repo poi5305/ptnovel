@@ -9,6 +9,16 @@ class PtParser {
 
     }
 
+    public static function parseContentFromThread(&$html) {
+        $text = "";
+        $posts = $html->find("*[id^=postmessage_]");
+        foreach($posts as $post)
+        {
+            $text .= str_replace("&nbsp;", "", $post->plaintext);
+        }
+        return $text;
+    }
+
     public static function parseBookFromThread(&$html) {
         $postlist = $html->find("div[id='postlist']", 0);
         $class = $postlist->find("h2",0)->plaintext;
@@ -29,7 +39,7 @@ class PtParser {
         $source = "ck101";
 
         return new Book($id, $name, $class, $posts, $pages,
-                $current_pages, $looks, $likes, $info, $source);
+            $current_pages, $looks, $likes, $info, $source);
     }
 
     public static function parseBooksFromForum(&$html) {
