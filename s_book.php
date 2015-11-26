@@ -34,7 +34,8 @@ class Book {
     }
 
     public static function toArray(Book &$book) {
-        return get_object_vars($book);
+        // not call get_object_vars for hidding private parameter
+        return call_user_func('get_object_vars', $book);
     }
 
 }
