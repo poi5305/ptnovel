@@ -58,9 +58,11 @@ class PtServer {
         $offset = 0;
         $dbBooks = $this->db->getBookList($offset, $limit);
         while (count($dbBooks) > 0) {
+            $this->d("UpdateAllBooks, $offset~" . ($offset + $limit) . "/" . count($dbBooks));
             foreach ($dbBooks as &$dbBook) {
                 $book = Book::withArray($dbBook);
                 $this->updateBook($book);
+                sleep(self::QUERY_SLEEP);
             }
             $offset += $limit;
             $dbBooks = $this->db->getBookList($offset, $limit);
@@ -110,5 +112,10 @@ class PtServer {
     }
 
 }
+
+//$server = new PtServer();
+//$server->updateBookList(1);
+//$server->updateBookById(1082175);
+//$server->updateAllBooks();
 
 ?>
