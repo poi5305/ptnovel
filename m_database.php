@@ -5,6 +5,8 @@ interface PtNovelDatabase {
     // open/client to database
     public function init();
 
+    public function close();
+
     public function getBookList($offset, $limit);
 
     public function getBookById($getBookById);
@@ -96,6 +98,10 @@ SQL_BOOKS;
     public function init() {
         $this->handle = new SQLite3(self::PATH_DATABASE);
         $this->handle->query(self::SQL_CREATE_TABLE_BOOKS);
+    }
+
+    public function close() {
+        $this->handle->close();
     }
 
     public function getBookList($offset, $limit) {
