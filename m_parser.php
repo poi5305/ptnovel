@@ -78,6 +78,10 @@ class PtParserCk101 implements PtParser{
             $class = $bookTitle->find("em", 0)->plaintext;
             $name = $bookTitle->find("a", 1)->plaintext;
 
+            if($class == "[版務公告]") {
+                continue;
+            }
+
             list($likes, $posts, $looks) = array_values(array_filter(explode(" ", $numbers), function(&$v) {
                 $v = str_replace("/", "", $v);
                 $v = str_replace("感謝", "", $v);

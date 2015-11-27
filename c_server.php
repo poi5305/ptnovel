@@ -53,9 +53,8 @@ class PtServer {
         }
     }
 
-    public function updateAllBooks() {
+    public function updateAllBooks($offset = 0) {
         $limit = 10;
-        $offset = 0;
         $dbBooks = $this->db->getBookList($offset, $limit);
         while (count($dbBooks) > 0) {
             $this->d("UpdateAllBooks, $offset~" . ($offset + $limit) . "/" . count($dbBooks));
@@ -90,7 +89,7 @@ class PtServer {
         }
 
         do {
-            $this->d("Start to update book, {$book->current_pages}/{$book->pages}, {$book->name}");
+            $this->d("Start to update book {$book->id}, {$book->current_pages}/{$book->pages}, {$book->name}");
             if ($book->current_pages != 1) { // page 1 is already downloaded
                 $html = PtHttpCk101::getBookContentPage($dbBook->id, $book->current_pages);
             }
