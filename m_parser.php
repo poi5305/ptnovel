@@ -100,7 +100,11 @@ class PtParserCk101 implements PtParser{
     }
 
     public static function parseForumPages(&$html) {
-        $pages = $html->find("a.last", 0)->plaintext;
+        $pages = @$html->find("a.last", 0)->plaintext;
+        if ($pages == "") {
+            $nxt = $html->find("a.nxt", 0);
+            $pages = $nxt == NULL ? 0 : $nxt->prev_sibling()->plaintext;
+        }
         $pages = trim(str_replace(".", "", $pages));
         return $pages;
     }

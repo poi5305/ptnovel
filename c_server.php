@@ -11,7 +11,7 @@ include_once("m_parser.php");
 class PtServer {
 
     const DEBUG = true;
-    const QUERY_SLEEP = 3;
+    const QUERY_SLEEP = 6;
 
     private $db;
 
@@ -24,10 +24,10 @@ class PtServer {
         $page = $fromPage;
         $maxPage = 0;
         do {
-            $this->d("parsing forum page $page ...");
             $html = PtHttpCk101::getBookListPage($page);
             $bookList = PtParserCk101::parseBooksFromForum($html);
-            $maxPage = PtParserCk101::parseForumPages($html);
+            $maxPage = max($maxPage, PtParserCk101::parseForumPages($html));
+            $this->d("parsing forum page $page/$maxPage");
             $this->updateBookListImpl($bookList);
             $this->d("update list finish " . count($bookList) . " books");
             sleep(self::QUERY_SLEEP);
@@ -62,6 +62,6 @@ class PtServer {
 }
 
 $server = new PtServer();
-$server->updateBookList(23);
+$server->updateBookList(223);
 
 ?>
