@@ -7,7 +7,6 @@ include_once("m_http.php");
 include_once("m_file.php");
 include_once("m_parser.php");
 
-
 class PtServer {
 
     const DEBUG = true;
@@ -18,6 +17,9 @@ class PtServer {
     public function PtServer() {
         $this->db = new Sqlite3Db();
         $this->db->init();
+    }
+
+    public function index() {
     }
 
     public function updateBookList($fromPage = 1) {
@@ -108,10 +110,5 @@ class PtServer {
     }
 
 }
-
-$server = new PtServer();
-$server->updateBookList(1);
-//$server->updateBookById(1082175);
-//$server->updateAllBooks();
 
 ?>
