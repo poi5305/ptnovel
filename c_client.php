@@ -45,6 +45,7 @@ class Client {
         echo iconv("UTF-8", "UTF-16", "程式作者：Andy\n\n");
         echo iconv("UTF-8", "UTF-16", "Class: {$dbBook['class']}\n");
         echo iconv("UTF-8", "UTF-16", "Pages: {$dbBook['pages']}\n");
+        echo iconv("UTF-8", "UTF-16", "Posts: {$dbBook['posts']}\n");
         echo iconv("UTF-8", "UTF-16", "Looks: {$dbBook['looks']}\n");
 
         $page = max(1, $page);
