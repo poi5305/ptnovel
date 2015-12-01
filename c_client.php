@@ -12,7 +12,7 @@ class Client {
     }
 
     public function index() {
-
+        echo file_get_contents("v_index.html");
     }
 
     public function getBookList($page = 1, $limit = 20) {

@@ -3,7 +3,7 @@
 
 class Controller{
 
-    public $defaultObject = "";
+    public $defaultObject = "client";
     public $defaultMethod = "index";
 
     public $path;
