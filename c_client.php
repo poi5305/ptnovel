@@ -22,15 +22,35 @@ class Client {
     }
 
     public function getBookInfo($bookId) {
-        echo PtFile::printBook($bookId, 1, 1);
+        PtFile::printBook($bookId, 1, 1);
     }
 
     public function deleteBook($bookId) {
-
+        // Do not implement
     }
 
-    public function downloadBook($page = 0, $limit = 0) {
+    public function downloadBook($bookId, $page = 0, $limit = 0) {
+        $dbBooks = $this->db->getBookById((int) $bookId);
+        if (count($dbBooks) == 0) {
+            // TODO: error msg
+            return;
+        }
+        $dbBook = array_shift($dbBooks);
 
+        header("Content-type: text/plain");
+        header("Content-type: text/plain; charset=UTF-16");
+        header('Content-Disposition: attachment; filename*=UTF-8\'\'' . urlencode($dbBook["name"]."txt"));
+        
+        echo iconv("UTF-8", "UTF-16", $dbBook["name"]."\n\n");
+        echo iconv("UTF-8", "UTF-16", "程式作者：Andy\n\n");
+        echo iconv("UTF-8", "UTF-16", "Class: {$dbBook['class']}\n");
+        echo iconv("UTF-8", "UTF-16", "Pages: {$dbBook['pages']}\n");
+        echo iconv("UTF-8", "UTF-16", "Looks: {$dbBook['looks']}\n");
+
+        $page = max(1, $page);
+        $limit = $limit == 0 ? $dbBook["pages"] : $limit;
+
+        PtFile::printBook($bookId, $page, $limit);
     }
 
     public function searchBook($name) {
