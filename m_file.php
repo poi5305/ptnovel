@@ -29,7 +29,9 @@ class PtFile {
     {
         for ($i = $page_from; $i <= $page_end; $i++) {
             $bookPath = PtFile::getBookPath($bookId, $i);
-            echo file_get_contents($bookPath);
+            if (file_exists($bookPath)) {
+                echo file_get_contents($bookPath);
+            }
         }
     }
 
