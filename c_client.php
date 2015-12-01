@@ -15,7 +15,7 @@ class Client {
 
     }
 
-    public function getBookList($page, $limit = 20) {
+    public function getBookList($page = 1, $limit = 20) {
         $offset = min(0, ($page - 1) * $limit);
         $dbBooks = $this->db->getBookList($offset, $limit);
         echo json_encode($dbBooks);
@@ -53,8 +53,10 @@ class Client {
         PtFile::printBook($bookId, $page, $limit);
     }
 
-    public function searchBook($name) {
-
+    public function searchBook($name, $page = 1, $limit = 20) {
+        $offset = min(0, ($page - 1) * $limit);
+        $dbBooks = $this->db->searchBooks($name, $offset, $limit);
+        echo json_encode($dbBooks);
     }
 
 }

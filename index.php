@@ -17,8 +17,9 @@ Server Usage:
     http://localhost/ptnovel/ptserver/updateBookById/1082175
     http://localhost/ptnovel/ptserver/updateAllBooks
 Client Usage:
-    php index.php client/getBookList/1 
-
+    php index.php client/getBookList/1
+    php index.php client/getBookInfo/2654748
+    php index.php client/searchBook/盜賊
 */
 
 
