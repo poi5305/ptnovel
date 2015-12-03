@@ -128,7 +128,6 @@ SQL_BOOKS;
 
     public function searchBooks($name, $offset, $limit) {
        $sql = SqlUtils::selectWhere(self::TABLE_BOOKS, "name LIKE '%$name%'", $offset, $limit);
-       echo $sql;
        $r = $this->handle->query($sql);
         $results = array();
         while ($row = $r->fetchArray(SQLITE3_ASSOC)) {
