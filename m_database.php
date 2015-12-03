@@ -11,6 +11,8 @@ interface PtNovelDatabase {
 
     public function getBookById($getBookById);
 
+    public function searchBooks($name, $offset, $limit);
+
     public function addNewBook($data);
 
     public function editBook($book);
@@ -117,6 +119,16 @@ SQL_BOOKS;
     public function getBookById($bookId) {
         $sql = SqlUtils::selectWhere(self::TABLE_BOOKS, "id = '$bookId'");
         $r = $this->handle->query($sql);
+        $results = array();
+        while ($row = $r->fetchArray(SQLITE3_ASSOC)) {
+            $results[] = $row;
+        }
+        return $results;
+    }
+
+    public function searchBooks($name, $offset, $limit) {
+       $sql = SqlUtils::selectWhere(self::TABLE_BOOKS, "name LIKE '%$name%'", $offset, $limit);
+       $r = $this->handle->query($sql);
         $results = array();
         while ($row = $r->fetchArray(SQLITE3_ASSOC)) {
             $results[] = $row;
