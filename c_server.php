@@ -11,10 +11,13 @@ class PtServer {
 
     const DEBUG = true;
     const QUERY_SLEEP = 6;
+    const LOG_FILE = "log.txt";
 
     private $db;
+    private $fpLog;
 
     public function PtServer() {
+	    $this->fpLog = fopen(self::LOG_FILE, 'a');
         $this->db = new Sqlite3Db();
         $this->db->init();
     }
@@ -105,12 +108,15 @@ class PtServer {
     }
 
     public function d($msg) {
+	    
         if (self::DEBUG) {
             echo "DEBUG: $msg\n";
+            fputs($this->fpLog, "DEBUG: $msg\n");
         }
     }
 
     public function __destruct() {
+	    fclose($this->fpLog);
         $this->db->close();
     }
 
