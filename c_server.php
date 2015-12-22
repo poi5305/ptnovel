@@ -81,9 +81,13 @@ class PtServer {
     public function updateBook(Book &$dbBook) {
         $html = PtHttpCk101::getBookContentPage($dbBook->id, 1);
         $book = PtParserCk101::parseBookFromThread($html);
+        if ($book == null) {
+	        $this->d("Error! The Book not exists. {$dbBook->id} {$dbBook->name}");
+	        return;
+        }
         $book->current_pages = max($dbBook->current_pages, 1);
 
-        if ($book->current_pages >= $book->pages) {
+        if ($book->current_pages > $book->pages) {
             $this->d("Book do not need update, {$book->id}: {$book->current_pages}/{$book->pages}");
             return;
         }

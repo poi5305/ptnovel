@@ -46,6 +46,9 @@ class PtParserCk101 implements PtParser{
 
     public static function parseBookFromThread(&$html) {
         $postlist = $html->find("div[id='postlist']", 0);
+        if ($postlist == null) {
+	        return null;
+        }
         $class = $postlist->find("h2",0)->plaintext;
         $name = $postlist->find("h1",0)->plaintext;
 
