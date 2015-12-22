@@ -29,18 +29,18 @@
         localStorage.dlHref = "";
         if(localStorage.page==undefined)localStorage.page=1;
         $("#last").html("<a href='#'>"+"目前頁數 "+localStorage.page+" 上一頁</a>");
-        $("#next").html("<a href='#'>"+"目前頁數"+localStorage.page+" 下一頁</a>");
+        $("#next").html("<a href='#'>"+"目前頁數 "+localStorage.page+" 下一頁</a>");
         $("#last").bind("click",function(){
             if(localStorage.page<=1)return 0;
             localStorage.page--;
             $("#last").html("<a href='#'>"+"目前頁數 "+localStorage.page+" 上一頁</a>");
-            $("#next").html("<a href='#'>"+"目前頁數"+localStorage.page+" 下一頁</a>");
+            $("#next").html("<a href='#'>"+"目前頁數 "+localStorage.page+" 下一頁</a>");
             readList();
         });
         $("#next").bind("click",function(){
             localStorage.page++;
             $("#last").html("<a href='#'>"+"目前頁數 "+localStorage.page+" 上一頁</a>");
-            $("#next").html("<a href='#'>"+"目前頁數"+localStorage.page+" 下一頁</a>");
+            $("#next").html("<a href='#'>"+"目前頁數 "+localStorage.page+" 下一頁</a>");
             readList();
         });
         $("#bookListUpd").click(function(){
@@ -80,14 +80,12 @@
         else
         {
             $("#novelList").html("<li>讀取列表中...請稍後</li>");
-            var c = new Client("getBookList").get(parser_novel_list);
+            var c = new Client("getBookList", localStorage.page).get(parser_novel_list);
         }
     }
     function searchList(){
         $("#novelList").html("<li>搜尋中...請稍後</li>");
-        console.log("fqnovel.php?type=search&text="+$("#search").val()+"&page="+localStorage.page);
-        $.get("fqnovel.php?type=search&text="+$("#search").val()+"&page="+localStorage.page)
-        .done(parser_novel_list);
+        var c = new Client("searchBook", $("#search").val(), localStorage.page).get(parser_novel_list);
     }
     function parser_novel_list(data)
     {
