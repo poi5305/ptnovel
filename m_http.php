@@ -25,7 +25,7 @@ class PtHttpUtil {
 class PtHttpCk101 implements PtHttp {
 
     const WEB_URL = "http://ck101.com";
-    const FORUM_URL = "forum-237-%d.html";
+    const FORUM_URL = "forum-3419-%d.html";
     const THREAD_URL = "thread-%d-%d-1.html";
 
     public static function login() {}
@@ -34,7 +34,13 @@ class PtHttpCk101 implements PtHttp {
 
     public static function getBookListPage($page) {
         $url = self::WEB_URL . "/" . sprintf(self::FORUM_URL, $page);
-        return PtHttpUtil::getDomFromUrl($url);
+        // special for ck101 html tag error >>>>>
+        $search = "</span>\r\n                                  </div>";
+        $replace = "</span>\r\n";
+        $htmlText = str_replace($search, $replace, file_get_contents($url));
+        return str_get_html($htmlText);
+        // special for ck101 html tag error <<<<<
+        //return PtHttpUtil::getDomFromUrl($url);
     }
 
     public static function getBookContentPage($bookId, $page) {
