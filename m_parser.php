@@ -56,11 +56,11 @@ class PtParserCk101 implements PtParser{
         list($id, $current_pages) = sscanf($url, "http://ck101.com/thread-%d-%d-1.html");
 
         $looks = $posts = $likes = 0;
-        $bookInfo = trim($html->find("div.authMsg", 0)->plaintext);
-        preg_match("/.+查看\ (\d*).+回覆\ (\d*).+感謝\ (\d*)/", str_replace("\n", "", $bookInfo), $numbers);
-        if (count($numbers) >= 4) {
-            list($match, $looks, $posts, $likes) = $numbers;
-        }
+        $bookInfo = $html->find("div.authMsg", 0);
+        
+        $looks = $bookInfo->find(".viewNum", 0)->plaintext;
+        $posts = $bookInfo->find(".replayNum", 0)->plaintext;
+        $likes = $bookInfo->find(".thankNum", 0)->plaintext;
 
         $pages = floor($posts/10) + 1;
         $info = strstr($name, "已完") ? 1 : 0;
@@ -73,10 +73,9 @@ class PtParserCk101 implements PtParser{
     public static function parseBooksFromForum(&$html) {
         $books = array();
         $threads = $html->find("*[id^=normalthread]");
-        foreach($threads as $thread) {
+        foreach($threads as $key => $thread) {
             $bookTitle = $thread->find("div.blockTitle", 0);
             $numbers = $thread->find(".num", 0)->plaintext;
-            
             $id = $thread->tid;
             $class = $bookTitle->find("em", 0)->plaintext;
             $name = $bookTitle->find("a", 1)->plaintext;
@@ -99,7 +98,6 @@ class PtParserCk101 implements PtParser{
             $current_pages = 0;
             $info = strstr($name, "已完") ? 1 : 0;
             $source = "ck101";
-
             $books[] = new Book($id, $name, $class, $posts, $pages,
                 $current_pages, $looks, $likes, $info, $source);
         }
@@ -129,7 +127,12 @@ class PtParserCk101Test {
     }
 
     public function testParserBooksFromForum() {
-        $html = file_get_html("test/forum.html");
+        //$html = file_get_html("test/forum.html");
+        // new version 2016/01/20 update
+        $search = "</span>\r\n                                  </div>";
+        $replace = "</span>\r\n";
+        $htmlText = str_replace($search, $replace, file_get_contents("test/forum.html"));
+        $html = str_get_html($htmlText);
         $r = PtParserCk101::parseBooksFromForum($html);
         //print_r($r);
     }
