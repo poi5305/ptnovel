@@ -90,6 +90,11 @@ class PtServer {
         }
         $book->current_pages = max($dbBook->current_pages, 1);
 
+		if ($book->posts == 0) {
+			$this->d("Error! Can not parse pages! {$book->id}, {$book->current_pages}/{$book->pages}, {$book->name}");
+			return;
+		}
+
         do {
             $this->d("Start to update book {$book->id}, {$book->current_pages}/{$book->pages}, {$book->name}");
             if ($book->current_pages != 1) { // page 1 is already downloaded

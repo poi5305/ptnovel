@@ -58,9 +58,13 @@ class PtParserCk101 implements PtParser{
         $looks = $posts = $likes = 0;
         $bookInfo = $html->find("div.authMsg", 0);
         
-        $looks = $bookInfo->find(".viewNum", 0)->plaintext;
-        $posts = $bookInfo->find(".replayNum", 0)->plaintext;
-        $likes = $bookInfo->find(".thankNum", 0)->plaintext;
+        $looks = 0; $posts = 0; $likes = 0;
+
+        if ($bookInfo != null) {
+	        $looks = $bookInfo->find(".viewNum", 0)->plaintext;
+			$posts = $bookInfo->find(".replayNum", 0)->plaintext;
+			$likes = $bookInfo->find(".thankNum", 0)->plaintext;
+        }
 
         $pages = floor($posts/10) + 1;
         $info = strstr($name, "已完") ? 1 : 0;
