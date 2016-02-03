@@ -20,6 +20,8 @@ Client Usage:
     php index.php client/getBookList/1
     php index.php client/getBookInfo/2654748
     php index.php client/searchBook/盜賊
+    php index.php client/getBooksInfo
+    http://localhost/ptnovel/ptserver/getBooksInfo
 */
 
 

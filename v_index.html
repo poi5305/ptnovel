@@ -69,9 +69,20 @@
                 searchList();
             }
         });
+		$("#bookInfo").bind("click", function() {
+			var c = new Client("getBooksInfo").get(function(data) {
+				var obj = JSON.parse(data);
+				for (var k1 in obj) {
+					for (var k2 in obj[k1]) {
+						$("#" + k1 + "_" + k2).html(obj[k1][k2]);
+					}
+				}
+			});
+		});
         
         readList();
     });
+    
     function readList(){
         if($("#search").val() != "")
         {
@@ -147,7 +158,7 @@
     <div id="home">
         <div class="toolbar">
             <h1>卡提諾小說</h1>
-            <a href="#book" class="button">書庫</a>
+            <a id="bookInfo" href="#book" class="button">簡介</a>
         </div>
         <ul>
             <li><input type="text" id="search" placeholder="搜尋" /></li>
@@ -156,6 +167,31 @@
         <ul id="novelList" class="edgetoedge">
         </ul>
         <ul><li id="next"></li></ul>
+    </div>
+    <div id="book">
+        <div class="toolbar">
+            <a href="#" class="back">首頁</a>
+            <h1>小說介紹</h1>
+        </div>
+        <ul class="rounded">
+            <li>現有小說數量</li>
+            <li><span id="downloaded_count"></span> 本</li>
+            <li><span id="downloaded_pages"></span> 頁</li>
+            <li><span id="downloaded_posts"></span> 章</li>
+        </ul>
+        <ul class="rounded">
+            <li>下載中小說數量</li>
+            <li><span id="downloading_count"></span> 本</li>
+            <li><span id="downloading_pages"></span> 頁</li>
+            <li><span id="downloading_posts"></span> 章</li>
+        </ul>
+        <ul class="rounded">
+            <li>已完結小說數量</li>
+            <li><span id="finishBook_count"></span> 本</li>
+            <li><span id="finishBook_pages"></span> 頁</li>
+            <li><span id="finishBook_posts"></span> 章</li>
+        </ul>
+        </div>
     </div>
     <div id="novelInfo">
         <div class="toolbar">

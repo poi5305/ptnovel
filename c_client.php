@@ -28,6 +28,13 @@ class Client {
     public function deleteBook($bookId) {
         // Do not implement
     }
+    
+    public function getBooksInfo() {
+	    $result["downloaded"] = $this->db->sql("select count(id) as count, sum(pages) as pages, sum(posts) as posts from books where current_pages == pages")[0];
+	    $result["downloading"] = $this->db->sql("select count(id) as count, sum(pages) as pages, sum(posts) as posts from books where current_pages != pages")[0];
+	    $result["finishBook"] = $this->db->sql("select count(id) as count, sum(pages) as pages, sum(posts) as posts from books where info == 1")[0];
+		echo json_encode($result);
+    }
 
     public function downloadBook($bookId, $page = 0, $limit = 0) {
         $dbBooks = $this->db->getBookById((int) $bookId);
