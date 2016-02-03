@@ -18,6 +18,8 @@ interface PtNovelDatabase {
     public function editBook($book);
 
     public function deleteBook($bookId);
+    
+    public function sql($sql);
 
 }
 
@@ -156,6 +158,15 @@ SQL_BOOKS;
         $sql = SqlUtils::update(self::TABLE_BOOKS, $book, "id = '$bookId'");
         $this->handle->exec($sql);
         return $bookId;
+    }
+    
+    public function sql($sql) {
+	    $r = $this->handle->query($sql);
+        $results = array();
+        while ($row = $r->fetchArray(SQLITE3_ASSOC)) {
+            $results[] = $row;
+        }
+        return $results;
     }
 
     public function deleteBook($bookId) {
