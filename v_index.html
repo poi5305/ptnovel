@@ -69,7 +69,7 @@
                 searchList();
             }
         });
-		$("#bookInfo").bind("click", function() {
+		$("#bookInfo").bind("touchstart click", function() {
 			var c = new Client("getBooksInfo").get(function(data) {
 				var obj = JSON.parse(data);
 				for (var k1 in obj) {
