@@ -27,8 +27,8 @@ class SqlUtils {
     
     const SQL_GET_LIST = "SELECT * FROM %s LIMIT %d, %d";
 
-    static public function select($table, $offset = 0, $limit = 10) {
-        return "SELECT * FROM $table LIMIT $offset, $limit";
+    static public function select($table, $offset = 0, $limit = 10, $order = "") {
+        return "SELECT * FROM $table $order LIMIT $offset, $limit";
     }
 
     static public function selectWhere($table, $where, $offset = 0, $limit = 10) {
@@ -109,7 +109,7 @@ SQL_BOOKS;
     }
 
     public function getBookList($offset, $limit) {
-        $sql = SqlUtils::select(self::TABLE_BOOKS, $offset, $limit);
+        $sql = SqlUtils::select(self::TABLE_BOOKS, $offset, $limit, "ORDER BY likes DESC, looks DESC");
         $r = $this->handle->query($sql);
         $results = array();
         while ($row = $r->fetchArray(SQLITE3_ASSOC)) {
