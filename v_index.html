@@ -108,7 +108,8 @@
                 var html = "";
                 html+="<li class='arrow'>";
                 html+="<a href='#novelInfo' class='noveList' style='font-size:12px;'>";
-                html+=obj[key]["class"] + " [文章/人氣]"+ "[" + obj[key]["posts"] + "/" + obj[key]["looks"] + "]";
+                html+=obj[key]["class"] + " [文章/人氣/喜愛]" + "[" + obj[key]["posts"] 
+                	+ "/" + obj[key]["looks"] + "/" + + obj[key]["likes"] + "]";
                 html+="<br>";
                 html+=obj[key]["name"];
                 html+="</a>";
