@@ -100,6 +100,10 @@ class PtServer {
             if ($book->current_pages != 1) { // page 1 is already downloaded
                 $html = PtHttpCk101::getBookContentPage($dbBook->id, $book->current_pages);
             }
+            if ($html == null) {
+	            $this->d("Get content text error! Ignore this book");
+	            break;
+            }
             $text = PtParserCk101::parseContentFromThread($html);
             PtFile::saveBook($book->id, $book->current_pages, $text);
             $this->db->editBook(Book::toArray($book));
@@ -108,7 +112,6 @@ class PtServer {
     }
 
     public function d($msg) {
-	    
         if (self::DEBUG) {
             echo "DEBUG: $msg\n";
             fputs($this->fpLog, "DEBUG: $msg\n");
