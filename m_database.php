@@ -89,7 +89,8 @@ class Sqlite3Db implements PtNovelDatabase {
             looks INTEGER,
             likes INTEGER,
             info TEXT,
-            source TEXT
+            source TEXT,
+            update_time INTEGER
         );
 SQL_BOOKS;
 
@@ -223,7 +224,8 @@ class Sqlite3DbTest {
             "looks" => "115887",
             "likes" => "15",
             "info" => "some info",
-            "source" => "ck101");
+            "source" => "ck101",
+            "update_time" => time());
         $this->handle->addNewBook($book);
         $this->handle->printError(__FUNCTION__);
     }
@@ -233,7 +235,8 @@ class Sqlite3DbTest {
             "posts" => "340",
             "current_pages" => "335",
             "looks" => "155887",
-            "likes" => "20");
+            "likes" => "20",
+            "update_time" => time());
         $this->handle->editBook($book);
         $this->handle->printError(__FUNCTION__);
     }

@@ -12,9 +12,10 @@ class Book {
     public $likes;
     public $info;
     public $source;
+    public $update_time;
 
     public function Book($id, $name, $class, $posts, $pages,
-        $current_pages, $looks, $likes, $info, $source) {
+        $current_pages, $looks, $likes, $info, $source, $update_time = "") {
         $this->id = $id;
         $this->name = $name;
         $this->class = $class;
@@ -25,12 +26,13 @@ class Book {
         $this->likes = $likes;
         $this->info = $info;
         $this->source = $source;
+        $this->update_time = $update_time;
     }
 
     public static function withArray($book) {
         extract($book);
         return new Book($id, $name, $class, $posts, $pages,
-            $current_pages, $looks, $likes, $info, $source);
+            $current_pages, $looks, $likes, $info, $source, $update_time);
     }
 
     public static function toArray(Book &$book) {

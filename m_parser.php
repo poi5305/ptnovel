@@ -72,9 +72,10 @@ class PtParserCk101 implements PtParser{
         $pages = floor($posts/10) + 1;
         $info = strstr($name, "已完") ? 1 : 0;
         $source = "ck101";
-
+		$update_time = time();
+		
         return new Book($id, $name, $class, $posts, $pages,
-            $current_pages, $looks, $likes, $info, $source);
+            $current_pages, $looks, $likes, $info, $source, $update_time);
     }
 
     public static function parseBooksFromForum(&$html) {
@@ -105,8 +106,10 @@ class PtParserCk101 implements PtParser{
             $current_pages = 0;
             $info = strstr($name, "已完") ? 1 : 0;
             $source = "ck101";
+            $update_time = 0;
+            
             $books[] = new Book($id, $name, $class, $posts, $pages,
-                $current_pages, $looks, $likes, $info, $source);
+                $current_pages, $looks, $likes, $info, $source, $update_time);
         }
         return $books;
     }

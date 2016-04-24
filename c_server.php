@@ -63,6 +63,11 @@ class PtServer {
             $this->d("UpdateAllBooks, $offset~" . ($offset + $limit) . "/" . count($dbBooks));
             foreach ($dbBooks as &$dbBook) {
                 $book = Book::withArray($dbBook);
+                if ($book->update_time != "" && $book->update_time > time() - 60 * 60 * 24) {
+				    $next_update_time = Date("Y-m-d H:i:s", $book->update_time + 60 * 60 * 24);
+				    $this->d("Update time interval is too near, ignore. Next update: {$book->id}. {$next_update_time}");
+				    continue;
+			    }
                 $this->updateBook($book);
                 sleep(self::QUERY_SLEEP);
             }
