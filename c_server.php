@@ -63,8 +63,8 @@ class PtServer {
             $this->d("UpdateAllBooks, $offset~" . ($offset + $limit) . "/" . count($dbBooks));
             foreach ($dbBooks as &$dbBook) {
                 $book = Book::withArray($dbBook);
-                if ($book->update_time != "" && $book->update_time > time() - 60 * 60 * 24) {
-				    $next_update_time = Date("Y-m-d H:i:s", $book->update_time + 60 * 60 * 24);
+                if ($book->update_time != "" && $book->update_time > time() - 3 * 60 * 60 * 24) {
+				    $next_update_time = Date("Y-m-d H:i:s", $book->update_time + 3 * 60 * 60 * 24);
 				    $this->d("Update time interval is too near, ignore. Next update: {$book->id}. {$next_update_time}");
 				    continue;
 			    }
@@ -90,7 +90,9 @@ class PtServer {
         $html = PtHttpCk101::getBookContentPage($dbBook->id, 1);
         $book = PtParserCk101::parseBookFromThread($html);
         if ($book == null) {
-	        $this->d("Error! The Book not exists. {$dbBook->id} {$dbBook->name}");
+		$dbBook->update_time = time();
+	        $this->db->editBook(Book::toArray($dbBook));
+		$this->d("Error! The Book not exists. {$dbBook->id} {$dbBook->name}");
 	        return;
         }
         $book->current_pages = max($dbBook->current_pages, 1);
