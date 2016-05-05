@@ -43,7 +43,9 @@ class Client {
             return;
         }
         $dbBook = array_shift($dbBooks);
-
+        $download_times = @$dbBook["download_times"] + 1;
+		$this->db->editBook(array("id" => $dbBook["id"], "download_times" => $download_times));
+		
         header("Content-type: text/plain");
         header("Content-type: text/plain; charset=UTF-16");
         header('Content-Disposition: attachment; filename*=UTF-8\'\'' . urlencode($dbBook["name"]."txt"));

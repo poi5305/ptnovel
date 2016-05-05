@@ -90,7 +90,8 @@ class Sqlite3Db implements PtNovelDatabase {
             likes INTEGER,
             info TEXT,
             source TEXT,
-            update_time INTEGER
+            update_time INTEGER,
+            download_times INTEGER
         );
 SQL_BOOKS;
 
@@ -110,7 +111,7 @@ SQL_BOOKS;
     }
 
     public function getBookList($offset, $limit) {
-        $sql = SqlUtils::select(self::TABLE_BOOKS, $offset, $limit, "ORDER BY likes DESC, looks DESC");
+        $sql = SqlUtils::select(self::TABLE_BOOKS, $offset, $limit, "ORDER BY download_times DESC, likes DESC, looks DESC");
         $r = $this->handle->query($sql);
         $results = array();
         while ($row = $r->fetchArray(SQLITE3_ASSOC)) {

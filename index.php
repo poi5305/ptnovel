@@ -21,6 +21,7 @@ Client Usage:
     php index.php client/getBookInfo/2654748
     php index.php client/searchBook/盜賊
     php index.php client/getBooksInfo
+    php index.php client/downloadBook/997255/0/1
     http://localhost/ptnovel/ptserver/getBooksInfo
 */
 
