@@ -48,7 +48,7 @@ class PtFile {
         rmdir($directory);
     }
 
-    private static function getBookPath($bookId, $page = "") {
+    public static function getBookPath($bookId, $page = "") {
         if ($page == "") {
             return self::BOOK_DIR . "/$bookId";
         } else {

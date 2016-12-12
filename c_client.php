@@ -44,10 +44,10 @@ class Client {
         }
         $dbBook = array_shift($dbBooks);
         $download_times = @$dbBook["download_times"] + 1;
-		$this->db->editBook(array("id" => $dbBook["id"], "download_times" => $download_times));
-		
-        header("Content-type: text/plain");
-        header("Content-type: text/plain; charset=UTF-16");
+        $this->db->editBook(array("id" => $dbBook["id"], "download_times" => $download_times));
+
+        header('Content-type:application/force-download');
+        header('Content-Transfer-Encoding: Binary');
         header('Content-Disposition: attachment; filename*=UTF-8\'\'' . urlencode($dbBook["name"]."txt"));
         
         echo iconv("UTF-8", "UTF-16", $dbBook["name"]."\n\n");
@@ -61,6 +61,50 @@ class Client {
         $limit = $limit == 0 ? $dbBook["pages"] : $limit;
 
         PtFile::printBook($bookId, $page, $limit);
+    }
+    
+    public function downloadEBook($bookId, $page = 0, $limit = 0) {
+        $dbBooks = $this->db->getBookById((int) $bookId);
+        if (count($dbBooks) == 0) {
+            // TODO: error msg
+            return;
+        }
+        $dbBook = array_shift($dbBooks);
+        $download_times = @$dbBook["download_times"] + 1;
+		$this->db->editBook(array("id" => $dbBook["id"], "download_times" => $download_times));
+        
+        $page = max(1, $page);
+        $limit = $limit == 0 ? $dbBook["pages"] : $limit;
+        
+        header('Content-type:application/force-download');
+        header('Content-Transfer-Encoding: Binary');
+        header('Content-Disposition: attachment; filename*=UTF-8\'\'' . urlencode($dbBook["name"].".epub"));
+        
+        include_once("TPEpubCreator.php");
+        $epub = new TPEpubCreator();
+        $epub->temp_folder = 'tmp/';
+        $epub->epub_file = "tmp/$bookId.epub";
+        $epub->title = $dbBook["name"];
+        
+        $epub->creator = 'Andy.ck101';
+        $epub->language = 'zh';
+        $epub->rights = 'ck101';
+        $epub->publisher = 'http://novel.elggum.com';
+        
+        for ($i = $page; $i <= $limit; $i++) {
+            $bookPath = PtFile::getBookPath($bookId, $i);
+            if (file_exists($bookPath)) {
+                $c = file_get_contents($bookPath);
+                $c = iconv("UTF-16", "UTF-8", $c);
+                $epub->AddPage($c, false, "$i page");
+            }
+        }
+        if ( ! $epub->error ) {
+            $epub->CreateEPUB();
+            echo file_get_contents($epub->epub_file);
+        } else {
+            echo $epub->error;
+        }
     }
 
     public function searchBook($name, $page = 1, $limit = 20) {

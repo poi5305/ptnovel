@@ -135,11 +135,13 @@
     function setDownload(data, info) {
         $("#download").unbind().bind("touchstart click",function(){
             var url = new Client("downloadBook", data.id).url();
+            var eurl = new Client("downloadEBook", data.id).url();
             var gurl = "ghttp://"+location.host + location.pathname + url;
 
             console.log("setDownload", url, gurl);
 
             $("#fullDownload").attr("href", url);
+            $("#efullDownload").attr("href", eurl);
             $("#gfullDownload").attr("href", gurl);
             $("#bookMangerInfo").html(info);
 
@@ -220,7 +222,8 @@
                 到<input type="tel" id="partTo" value="2" style="width:30px;" />
             </li>
             <!-- <li><a id="partDownload" target="_blank" href="#">分段下載此小說</a></li> -->
-            <li><a id="fullDownload" target="_blank" href="#">完整下載此小說</a></li>
+            <li><a id="fullDownload" target="_blank" href="#">完整下載此小說 TXT</a></li>
+            <li><a id="efullDownload" target="_blank" href="#">完整下載此小說 ePub</a></li>
             <!-- <li><a id="gpartDownload" target="_blank" href="#">GoodReader 分段下載</a></li> -->
             <li><a id="gfullDownload" target="_blank" href="#">GoodReader 完整下載</a></li>
         </ul>

@@ -25,6 +25,7 @@ class PtHttpUtil {
 class PtHttpCk101 implements PtHttp {
 
     const WEB_URL = "http://ck101.com";
+    //const FORUM_URL = "forum-237-%d.html";
     const FORUM_URL = "forum-3419-%d.html";
     const THREAD_URL = "thread-%d-%d-1.html";
 
